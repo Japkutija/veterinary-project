@@ -1,0 +1,29 @@
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+header {
+  background: linear-gradient(to right, #667eea, #764ba2);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+}
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+@media (max-width: 768px) {
+  .mobile-nav {
+      display: none;
+  }
+  .hamburger {
+      display: block;
+  }
+  .hamburger.active + .mobile-nav {
+      display: block;
+  }
+}
+.cta-button {
+  transition: all 0.3s ease-in-out;
+}
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.2);
+}
