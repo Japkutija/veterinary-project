@@ -156,7 +156,7 @@
                             <td class="px-5 py-3">Dog</td>
                             <td class="px-5 py-3">Poodle</td>
                             <td class="flex items-center justify-start px-5 py-3 space-x-2">
-                              <button>
+                              <button (click)="openEditModal()">
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
                             <button>
@@ -207,5 +207,5 @@
         // ... existing modal script ...
     </script>
 </body>
-
+<app-pet-edit *ngIf="(modalService.watch() | async) === 'open'"></app-pet-edit>
 </html>
