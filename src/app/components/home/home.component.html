@@ -57,12 +57,12 @@ header {
                   <li class="relative">
                       <a href="#management" class="px-4 py-2 text-sm hover:underline">Login</a>
                       <ul class="absolute hidden bg-blue-700 rounded shadow-lg group-hover:block">
-                          <li><a href="#pet-management" class="block px-4 py-2 text-white hover:bg-blue-800">Pet and Owner Management</a></li>
+                          <li><a class="block px-4 py-2 text-white hover:bg-blue-800">Pet and Owner Management</a></li>
                           <li><a href="#vaccination" class="block px-4 py-2 text-white hover:bg-blue-800">Vaccination Records</a></li>
                           <li><a href="#reporting" class="block px-4 py-2 text-white hover:bg-blue-800">Reporting</a></li>
                       </ul>
                   </li>
-                  <li><a href="#dashboard" class="px-4 py-2 text-sm hover:underline">Management</a></li>
+                  <li><a [routerLink]= "['/pet-management']" class="px-4 py-2 text-sm hover:underline">Management</a></li>
                   <li><a href="#admin" class="px-4 py-2 text-sm hover:underline">Administrator Features</a></li>
                   <li><a href="#features" class="px-4 py-2 text-sm hover:underline">Additional Features</a></li>
               </ul>
