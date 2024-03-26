@@ -7,6 +7,8 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { PetManagementComponent } from './components/pet-management/pet-management.component';
 import { PetEditComponent } from './components/pet-management/pet-edit/pet-edit.component';
+import { OwnerManagementComponent } from './components/owner-management/owner-management.component';
+import { OwnerEditComponent } from './components/owner-management/owner-edit/owner-edit.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { PetEditComponent } from './components/pet-management/pet-edit/pet-edit.
     LoginComponent,
     PetManagementComponent,
     PetEditComponent,
+    OwnerManagementComponent,
+    OwnerEditComponent,
   ],
   imports: [
     BrowserModule,
