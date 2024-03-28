@@ -1,4 +1,4 @@
-import { ModalService } from './../../services/modal.service';
+import { ModalService, ModalType } from './../../services/modal.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -8,10 +8,11 @@ import { Component } from '@angular/core';
 })
 export class PetManagementComponent {
 
+  ModalType = ModalType;
   constructor(public modalService: ModalService){}
 
   openEditModal(): void {
-    this.modalService.open();
+    this.modalService.open(ModalType.PetEdit);
   }
 
 }

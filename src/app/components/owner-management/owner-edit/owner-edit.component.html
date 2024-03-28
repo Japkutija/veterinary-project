@@ -189,7 +189,7 @@
           <h2 class="text-xl font-semibold text-gray-700">Edit Owner Details</h2>
           <button
             class="text-gray-700 modal-close-button"
-
+            (click)="closeModal()"
           >
             &times;
           </button>
@@ -247,7 +247,7 @@
           <button class="cta-button" onclick="saveChanges()">
             Save Changes
           </button>
-          <button class="cta-button" >Cancel</button>
+          <button class="cta-button" (click)="closeModal()" >Cancel</button>
         </div>
       </div>
     </div>

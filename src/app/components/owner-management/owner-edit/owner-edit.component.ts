@@ -1,3 +1,4 @@
+import { ModalService } from './../../../services/modal.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class OwnerEditComponent {
 
+  constructor(public modalService: ModalService) { }
+  closeModal(): void {
+    this.modalService.close();
+  }
 }
