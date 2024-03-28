@@ -1,1 +1,255 @@
-<p>owner-edit works!</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Pet Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
+
+      body {
+        font-family: "Open Sans", sans-serif;
+      }
+
+      .modal {
+        transition: opacity 0.25s ease;
+      }
+
+      body.modal-active {
+        overflow-x: hidden;
+        overflow-y: visible !important;
+      }
+
+      .cta-button {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 600;
+        text-align: center;
+        color: #6d28d9; /* Purple-700 */
+        border: 2px solid #6d28d9; /* Purple-700 */
+        border-radius: 0.375rem; /* Rounded-md */
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+
+      .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.2);
+      }
+
+      .modal-overlay {
+        background-color: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 50;
+      }
+
+      .modal-container {
+        background-color: white;
+        padding: 3rem;
+        width: 50%; /* Adjust width as needed */
+        max-width: 40rem; /* Maximum width */
+        max-height: 100vh; /* Maximum height, adjust as needed */
+        border-radius: 1rem; /* Uniform border-radius */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adding some shadow for aesthetics */
+        /* overflow-y: auto;  */
+        position: relative; /* Position relative to contain the pseudo-elements */
+      }
+      .modal-body {
+        padding: 2rem; /* Apply padding to the scrollable content instead */
+        max-height: calc(
+          80vh - 9rem
+        ); /* Adjust this calculation to account for the header/footer height */
+        overflow-y: auto; /* This will make only the body scrollable */
+      }
+      /* Adjust the scrollbar to fit within the padding */
+      .modal-body::-webkit-scrollbar {
+        width: 12px; /* Width of the scrollbar */
+      }
+
+      .modal-body::-webkit-scrollbar-track {
+        background: transparent; /* Transparent track will not be visible */
+        margin-top: 2rem; /* Same as padding-top of container */
+        margin-bottom: 2rem; /* Same as padding-bottom of container */
+      }
+
+      .modal-body::-webkit-scrollbar-thumb {
+        background: #6d28d9; /* Scrollbar thumb color */
+        border-radius: 6px; /* Rounded scrollbar thumb */
+        border: 4px solid white; /* Same as container background */
+      }
+
+      .modal-body::-webkit-scrollbar-thumb:hover {
+        background: #5b21b6;
+      }
+
+      .modal-header {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+      }
+
+      .modal-close-button {
+        right: 0rem; /* Adjust this value to put the button on the right side */
+        position: absolute;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+      .modal-close-button:hover {
+        color: #6d28d9;
+      }
+
+      .form-field {
+        margin-bottom: 1rem;
+      }
+
+      .form-input,
+      .form-select,
+      .form-textarea {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 0.375rem;
+        border: 1px solid #6d28d9;
+        transition: border-color 0.3s;
+      }
+
+      .form-input:focus,
+      .form-select:focus,
+      .form-textarea:focus {
+        outline: none;
+        border-color: #5b21b6;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #6d28d9;
+        font-weight: 600;
+      }
+
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1.5rem;
+      }
+
+      .modal-footer .cta-button:not(:last-child) {
+        margin-right: 0.5rem;
+      }
+
+      .modal-footer .cta-button {
+        padding: 0.5rem 1rem;
+      }
+
+      .link-button {
+        display: inline-block;
+        color: #6d28d9;
+        text-decoration: underline;
+        cursor: pointer;
+        margin-right: 1rem;
+        font-weight: bold; /* Make the text bold or use other styles as needed */
+        background-color: #f3f4f6; /* Light background for the button */
+      }
+
+      .link-button:hover {
+        background-color: #e5e7eb;
+
+      }
+
+      @media (min-width: 768px) {
+        .modal-container {
+          width: 80%;
+          max-width: 720px;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100 modal-active" >
+    <div class="modal-overlay" id="modal">
+      <div class="p-8 bg-white rounded-lg modal-container">
+        <div class="modal-header">
+          <h2 class="text-xl font-semibold text-gray-700">Edit Owner Details</h2>
+          <button
+            class="text-gray-700 modal-close-button"
+
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-field">
+            <label for="first_name" class="form-label">First name</label>
+            <input
+              type="text"
+              id="first_name"
+              class="form-input"
+              value="Klemen"
+            />
+          </div>
+          <div class="form-field">
+            <label for="last_name" class="form-label">Last name</label>
+            <input
+              type="text"
+              id="last_name"
+              class="form-input"
+              value="Napast"
+            />
+          </div>
+          <div class="form-field">
+            <label for="EMSO" class="form-label">EMŠO</label>
+            <input type="number" id="EMSO" class="w-auto form-input" value="1711999500282" />
+          </div>
+          <div class="form-field">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" class="form-input" value="klemen.napast@protonmail.com" />
+          </div>
+          <div class="form-field">
+            <label for="Address" class="form-label">Address</label>
+            <input type="text" id="Address" class="form-input" value="Kmetavzarska ulica 5" />
+          </div>
+          <div class="form-field">
+            <label for="gender" class="form-label">Gender</label>
+            <select id="gender" class="form-select">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <!-- Repeat for other genders -->
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="date_of_birth" class="form-label">Date of Birth</label>
+            <input type="date" id="date_of_birth" class="form-input" />
+          </div>
+          <div class="form-field">
+            <button class="link-button">View Pets</button>
+            <button class="link-button">View Billing Information</button>
+            <button class="link-button">View Treatments</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="cta-button" onclick="saveChanges()">
+            Save Changes
+          </button>
+          <button class="cta-button" >Cancel</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
