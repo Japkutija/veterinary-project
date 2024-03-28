@@ -156,7 +156,7 @@
                         <button title="View Pets">
                           <i class="text-gray-600 fas fa-paw"></i>
                         </button>
-                        <button onclick="openEditOwnerModal(1)" title="Edit owner info">
+                        <button (click)="openEditOwnerModal()" title="Edit owner info">
                           <i class="fas fa-pencil-alt"></i>
                         </button>
                         <button onclick="deleteOwner(1)" title="Delete owner">
@@ -206,5 +206,5 @@
         // ... existing modal script ...
     </script>
 </body>
-<!-- <app-pet-edit *ngIf="(modalService.watch() | async) === 'open'"></app-pet-edit> -->
+<app-owner-edit *ngIf="(modalService.watch() | async) === ModalType.OwnerEdit"></app-owner-edit>
 </html>
