@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 })
 export class PetManagementComponent {
 
+
   ModalType = ModalType;
   constructor(public modalService: ModalService){}
 

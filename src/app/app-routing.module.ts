@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { PetManagementComponent } from './components/pet-management/pet-management.component';
 import { OwnerManagementComponent } from './components/owner-management/owner-management.component';
 import { OwnerEditComponent } from './components/owner-management/owner-edit/owner-edit.component';
+import { OwnerPetsManagementComponent } from './components/owner-management/owner-pets-management/owner-pets-management.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'pet-management', component: PetManagementComponent },
   { path: 'owner-management', component: OwnerManagementComponent},
   { path: 'owner-edit', component: OwnerEditComponent},
+  { path: 'owner-management/:ownerId/pets', component: OwnerPetsManagementComponent},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   //{ path: 'login', loadChildren: () => import('./components/login/login.module').then(m => m.LoginModule) },
 ];
