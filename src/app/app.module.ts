@@ -9,6 +9,7 @@ import { PetManagementComponent } from './components/pet-management/pet-manageme
 import { PetEditComponent } from './components/pet-management/pet-edit/pet-edit.component';
 import { OwnerManagementComponent } from './components/owner-management/owner-management.component';
 import { OwnerEditComponent } from './components/owner-management/owner-edit/owner-edit.component';
+import { OwnerPetsManagementComponent } from './components/owner-management/owner-pets-management/owner-pets-management.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { OwnerEditComponent } from './components/owner-management/owner-edit/own
     PetEditComponent,
     OwnerManagementComponent,
     OwnerEditComponent,
+    OwnerPetsManagementComponent,
   ],
   imports: [
     BrowserModule,
