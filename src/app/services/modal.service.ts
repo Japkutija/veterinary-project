@@ -9,21 +9,21 @@ export class ModalService {
 
   constructor() { }
 
-  private display: BehaviorSubject<'open' | 'close'> = new BehaviorSubject<'open' | 'close'>('close');
+  private displayPetDetails: BehaviorSubject<'open' | 'close'> = new BehaviorSubject<'open' | 'close'>('close');
 
   /**
-   * Returns an Observable that emits either 'open' or 'close' when the modal is displayed or closed.
+   * Returns an Observable that emits either 'open' or 'close' when the modal is displayPetDetailsed or closed.
    * @returns An Observable that emits either 'open' or 'close'.
    */
   watch(): Observable<'open' | 'close'> {
-    return this.display.asObservable();
+    return this.displayPetDetails.asObservable();
   }
 
   open(): void {
-    this.display.next('open');
+    this.displayPetDetails.next('open');
   }
 
   close(): void {
-    this.display.next('close');
+    this.displayPetDetails.next('close');
   }
 }
