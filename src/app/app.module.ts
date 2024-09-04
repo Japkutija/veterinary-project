@@ -23,37 +23,41 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { HeaderComponent } from './components/header/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { MainComponent } from './components/main/main.component';
+import { LoginFormComponent } from './components/login/login-form/login-form.component';
+import { LoginImageComponent } from "./components/login/login-image/login-image.component";
 
 
 registerLocaleData(sl);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    LoginComponent,
-    PetManagementComponent,
-    PetEditComponent,
-    HeaderComponent,
-    FooterComponent,
-    MainComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    IconsProviderModule,
-    NzLayoutModule,
-    NzMenuModule,
-    NzButtonModule,
-    NzTypographyModule,
-    NzListModule
-  ],
-  providers: [
-    { provide: NZ_I18N, useValue: sl_SI }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        LoginComponent,
+        PetManagementComponent,
+        PetEditComponent,
+        HeaderComponent,
+        FooterComponent,
+        MainComponent,
+        LoginFormComponent,
+        LoginImageComponent
+    ],
+    providers: [
+        { provide: NZ_I18N, useValue: sl_SI }
+    ],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        IconsProviderModule,
+        NzLayoutModule,
+        NzMenuModule,
+        NzButtonModule,
+        NzTypographyModule,
+        NzListModule,
+    ]
 })
 export class AppModule { }
