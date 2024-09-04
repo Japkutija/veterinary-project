@@ -1,59 +1,12 @@
 <nz-layout>
+
   <!-- Header -->
-  <!-- <nz-header class="flex-wrap items-center text-white custom-header">
-    <div class="flex items-center flex-nowrap logo">
-      <img src="https://placehold.co/150x50" alt="Veterinary Institute VZ Logo" style="height: 50px; margin-right: 16px;">
-      <span class="text-2xl font-bold">Veterinary Institute VZ</span>
-    </div>
-    <ul nz-menu nzMode="horizontal" text-white nzTheme="dark" nzSelectedKeys="['home']">
-      <li nz-menu-item [routerLink]="['/home']">Dashboard</li>
-      <li nz-submenu nzTitle="Login">
-        <ul>
-          <li nz-menu-item><a [routerLink]="['/login']">Pet and Owner Management</a></li>
-          <li nz-menu-item><a href="#vaccination">Vaccination Records</a></li>
-          <li nz-menu-item><a href="#reporting">Reporting</a></li>
-        </ul>
-      </li>
-      <li nz-menu-item [routerLink]="['/pet-management']">Management</li>
-      <li nz-menu-item><a href="#admin">Administrator Features</a></li>
-      <li nz-menu-item><a href="#features">Additional Features</a></li>
-    </ul>
-  </nz-header> -->
-<app-header></app-header>
+  <app-header></app-header>
 
   <!-- Main Content -->
-  <nz-content class="container px-6 py-12 mx-auto">
-    <section nz-typography class="mb-12 text-center">
-      <h1 nz-title level="1" class="mb-4">Caring for Your Furry Friends</h1>
-      <p nz-paragraph class="mb-6">Your trusted partner in pet healthcare.</p>
-      <img src="https://placehold.co/600x400" alt="Veterinary care with pets and professionals" class="mx-auto mb-8 rounded-lg shadow-lg">
-      <h2 nz-title level="2" class="mb-6 text-gray-800">Discover Our System</h2>
-      <p nz-paragraph class="mb-8 text-gray-600">Our system is designed to streamline the management of pet health records, ensuring your furry friends are always up-to-date with their vaccinations.</p>
-      <div class="flex justify-center">
-        <button nz-button nzType="primary" [routerLink]="['/login']" class="mr-4 custom-cta-button">Login</button>
-        <button nz-button nzType="default" nzGhost href="#learn-more" class="custom-cta-button">Learn More</button>
-      </div>
-    </section>
-  </nz-content>
+  <app-main></app-main>
 
   <!-- Footer -->
-  <nz-footer class="py-8 text-white bg-gray-900">
-    <div nz-row class="container mx-auto">
-      <div nz-col nzSpan="12" class="mb-6">
-        <h3 nz-title level="3" class="mb-4">Veterinary Institute VZ</h3>
-        <p class="mb-2">123 Vet Street, Petville, PA 12345</p>
-        <p class="mb-2">Email: contact@veterinaryvz.com</p>
-        <p>Phone: (123) 456-7890</p>
-      </div>
-      <div nz-col nzSpan="12">
-        <nz-list nzMode="horizontal" nzBordered>
-          <nz-list-item><a href="#privacy" class="hover:text-blue-400">Privacy Policy</a></nz-list-item>
-          <nz-list-item><a href="#terms" class="hover:text-blue-400">Terms of Use</a></nz-list-item>
-          <nz-list-item><a href="#disclaimer" class="hover:text-blue-400">Legal Disclaimer</a></nz-list-item>
-          <nz-list-item><a href="#contact" class="hover:text-blue-400">Contact Us</a></nz-list-item>
-          <nz-list-item><a href="#about" class="hover:text-blue-400">About Us</a></nz-list-item>
-        </nz-list>
-      </div>
-    </div>
-  </nz-footer>
+  <app-footer></app-footer>
+
 </nz-layout>
