@@ -25,8 +25,9 @@ export class PetManagementComponent {
   loadPets(): void {
     this.loading = true;
     this.petService.getPets(this.pageIndex, this.pageSize).subscribe(data => {
-      this.petList = data.pets;
-      this.total = data.total;
+      console.log('Data: ', data);
+      this.petList = data.content;
+      this.total = data.totalElements;
       this.loading = false;
     });
   }
