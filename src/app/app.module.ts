@@ -7,12 +7,12 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { PetManagementComponent } from './components/pet-management/pet-management.component';
 import { PetEditComponent } from './components/pet-management/pet-edit/pet-edit.component';
-import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { sl_SI } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import sl from '@angular/common/locales/sl';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './icons-provider.module';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
@@ -28,6 +28,7 @@ import { MainComponent } from './components/main/main.component';
 import { LoginFormComponent } from './components/login/login-form/login-form.component';
 import { LoginImageComponent } from "./components/login/login-image/login-image.component";
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 registerLocaleData(sl);
 
@@ -45,7 +46,9 @@ registerLocaleData(sl);
         LoginImageComponent
     ],
     providers: [
-        { provide: NZ_I18N, useValue: sl_SI }
+        { provide: NZ_I18N, useValue: en_US },
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+
     ],
     bootstrap: [AppComponent],
     imports: [

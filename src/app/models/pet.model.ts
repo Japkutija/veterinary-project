@@ -1,13 +1,12 @@
 export interface Pet {
   uuid: string;
   chipNumber: string;
-  firstName: string;
-  lastName: String;
+  nickname: string;
   gender: Gender;
   dateOfBirth: Date;
   weight: number;
   height: number;
-  ownerUuid: string;
+  ownerName: string;
   speciesUuid: string;
   speciesName: string;
   breedUuid: string;
