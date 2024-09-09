@@ -29,6 +29,7 @@ import { LoginFormComponent } from './components/login/login-form/login-form.com
 import { LoginImageComponent } from "./components/login/login-image/login-image.component";
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 registerLocaleData(sl);
 
@@ -65,7 +66,8 @@ registerLocaleData(sl);
         NzListModule,
         NzTableModule,
         NzPaginationModule,
-        NzInputModule
+        NzInputModule,
+        NzModalModule
     ]
 })
 export class AppModule { }
