@@ -9,7 +9,7 @@ import { PetResponse } from '../models/response/pet-response.model';
 })
 export class PetService {
 
-  private apiUrl = 'http://localhost:8080/api/pets'; // Replace with your backend API URL
+  private apiUrl = 'http://localhost:8080/api/pets';
 
   constructor(private http: HttpClient) {}
 
@@ -18,6 +18,7 @@ export class PetService {
   }
 
   // Add other methods for CRUD operations as needed
-
-
+  deletePet(petUuid: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${petUuid}`, { withCredentials: true });
+  }
 }
