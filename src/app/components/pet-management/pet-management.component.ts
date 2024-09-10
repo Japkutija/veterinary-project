@@ -3,6 +3,9 @@ import { ModalService } from './../../services/modal.service';
 import { Component } from '@angular/core';
 import { PetService } from 'src/app/services/pet.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { AuthService } from 'src/app/services/auth.service';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pet-management',
@@ -15,11 +18,23 @@ export class PetManagementComponent {
   total: number = 0;
   pageIndex: number = 1;
   pageSize: number = 10;
+  authSubscription!: Subscription;
 
-  constructor(private petService: PetService, private modal: NzModalService) {}
+  constructor(
+    private petService: PetService,
+    private modal: NzModalService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.loadPets();
+    this.authSubscription = this.authService.getAuthStatus().subscribe((isAuthenticated) => {
+      if (!isAuthenticated) {
+        this.router.navigate(['/login']);
+      } else {
+        this.loadPets();
+      }
+    });
   }
 
   loadPets(): void {

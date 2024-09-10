@@ -48,15 +48,7 @@ export class LoginFormComponent {
     }
   }
   logout(): void {
-    console.log(
-      'Checking value of the token in the local storage: ',
-      localStorage.getItem('accessToken')
-    );
     localStorage.removeItem('accessToken');
-    console.log(
-      'Checking value of the token in the local storage: ',
-      localStorage.getItem('accessToken')
-    );
     this.authService.logout();
   }
 }
