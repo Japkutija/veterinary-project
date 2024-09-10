@@ -27,10 +27,6 @@ export class AuthService {
     );
   }
 
-  // login(email: string, password: string): Observable<any> {
-  //   return this.http.post<any>('/api/login', { email, password });
-  // }
-
   private hasToken(): boolean {
     return !!localStorage.getItem('accessToken');
   }
@@ -38,7 +34,9 @@ export class AuthService {
   logout(): void {
     this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).subscribe({
       next: () => {
-        this.router.navigate(['/home']);
+        localStorage.removeItem('accessToken');
+        this.authStatus.next(false);
+        this.router.navigate(['/login']);
       },
       error: (err) => {
         console.error('Logout failed', err);
@@ -46,6 +44,7 @@ export class AuthService {
       },
     });
     this.authStatus.next(false);
+    localStorage.removeItem('accessToken');
   }
 
   getAuthStatus(): Observable<boolean> {
