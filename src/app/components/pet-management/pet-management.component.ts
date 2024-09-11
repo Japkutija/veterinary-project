@@ -18,6 +18,8 @@ export class PetManagementComponent {
   total: number = 0;
   pageIndex: number = 1;
   pageSize: number = 10;
+  sortField: string = 'id';
+  sortOrder: string = 'ascend';
   authSubscription!: Subscription;
 
   constructor(
@@ -39,7 +41,7 @@ export class PetManagementComponent {
 
   loadPets(): void {
     this.loading = true;
-    this.petService.getPets(this.pageIndex, this.pageSize).subscribe(
+    this.petService.getPets(this.pageIndex, this.pageSize, this.sortField, this.sortOrder).subscribe(
       (data: any) => {
         this.petList = data.content;
         this.total = data.totalElements;
@@ -62,10 +64,36 @@ export class PetManagementComponent {
     this.loadPets();
   }
 
+  /**
+   * Handles changes to query parameters, such as pagination and sorting.
+   *
+   * @param params - The query parameters object containing pagination and sorting information.
+   * @param params.pageIndex - The current page index.
+   * @param params.pageSize - The number of items per page.
+   * @param params.sort - An array of sorting objects, each containing a key and a value indicating the sort field and order.
+   *
+   * The method updates the component's pagination and sorting state based on the provided parameters.
+   * It then triggers the loading of pets with the updated query parameters.
+   *
+   * If a sort field is provided, it sets the sort field and order accordingly.
+   * If no sort field is provided, it resets to the default sort field ('id') and order ('ascend').
+   */
   onQueryParamsChange(params: any): void {
-    const { pageIndex, pageSize } = params;
-    this.pageIndex = pageIndex;
-    this.pageSize = pageSize;
+    const { sort } = params;
+    this.pageIndex = params.pageIndex;
+    this.pageSize = params.pageSize;
+
+    const activeSort = sort.find((s: any) => s.value); //Find the last non-null sort field
+
+    if (activeSort) {
+      this.sortField = activeSort.key === 'petId' ? 'id' : activeSort.key;
+      this.sortOrder = activeSort.value === 'ascend' ? 'asc' : 'desc';
+    } else {
+      // Resest to default sort if no sort is applied
+      this.sortField = 'id';
+      this.sortOrder = 'ascend';
+    }
+    console.log('Sort: ', sort);
     this.loadPets();
   }
 
@@ -102,7 +130,6 @@ export class PetManagementComponent {
         this.deletePet(petUuid);
       },
       nzCancelText: 'No',
-      nzOnCancel: () => console.log('Cancel'),
     });
   }
 
