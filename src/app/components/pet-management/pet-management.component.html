@@ -1,12 +1,10 @@
-
-<nz-layout>
+<nz-layout class="flex flex-col min-h-screen">
   <!-- Header -->
   <app-header></app-header>
 
   <!-- Main Content -->
   <nz-content class="flex justify-center p-8">
-    <div class="p-4 bg-white rounded-lg shadow-md w-[80%] pt-[2.18rem] px-[2.1rem] pb-0">
-
+    <div class="p-4 bg-white rounded-lg shadow-md w-[80%] pt-[2.18rem] px-[2.1rem] pb-0 h-[100%]">
       <!-- Search Input and Add Pet Button -->
       <div class="flex items-center justify-between mb-6 w-[31rem]">
         <nz-input-group nzSearch nzSize="default" [nzAddOnAfter]="suffixButton">
@@ -41,10 +39,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let pet of petList; let i = index;">
+          <tr *ngFor="let pet of petList; let i = index">
             <td>{{ i }}</td>
             <td>{{ pet.nickname }}</td>
-            <td><button nz-button nzType="link">{{ pet.ownerName }}</button></td>
+            <td>
+              <button nz-button nzType="link">{{ pet.ownerName }}</button>
+            </td>
             <td>{{ pet.speciesName }}</td>
             <td>{{ pet.breedName }}</td>
             <td>
