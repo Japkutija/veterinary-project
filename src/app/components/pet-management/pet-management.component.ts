@@ -93,7 +93,6 @@ export class PetManagementComponent {
       this.sortField = 'id';
       this.sortOrder = 'ascend';
     }
-    console.log('Sort: ', sort);
     this.loadPets();
   }
 

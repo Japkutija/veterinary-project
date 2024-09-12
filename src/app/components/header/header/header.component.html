@@ -5,7 +5,7 @@
   </div>
   <ul nz-menu nzMode="horizontal" nzTheme="dark" nzSelectedKeys="['home']">
     <li nz-menu-item [routerLink]="['/home']">Home</li>
-    <li nz-submenu nzTitle="Login">
+    <li nz-submenu [nzTitle]="authTitle" (click)="handleAuthAction()">
       <ul>
         <li nz-menu-item [routerLink]="['/login']">Pet and Owner Management</li>
         <li nz-menu-item><a href="#vaccination">Vaccination Records</a></li>

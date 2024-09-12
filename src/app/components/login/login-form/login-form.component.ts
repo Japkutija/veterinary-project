@@ -29,12 +29,10 @@ export class LoginFormComponent {
       this.authService.login(this.email, this.password).subscribe(
         (response) => {
           // Store the access token
-          console.log('Response: ', response);
           localStorage.setItem('accessToken', response.jwt);
 
           // Update authentication status
           this.authService.setAuthStatus(true);
-          console.log('Login check: ', this.isAuthenticated);
 
           // Navigate to the home page or protected page
           this.router.navigate(['/pet-management']);
