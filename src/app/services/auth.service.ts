@@ -48,10 +48,27 @@ export class AuthService {
   }
 
   getAuthStatus(): Observable<boolean> {
+    this.authStatus.next(this.isAuthenticated());
     return this.authStatus.asObservable();
   }
 
   setAuthStatus(isAuthenticated: boolean): void {
     this.authStatus.next(isAuthenticated);
+  }
+  isAuthenticated(): boolean {
+    return this.hasToken() && !this.isTokenExpired();
+  }
+
+  private isTokenExpired(): boolean {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      return true;
+    }
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const expiry = payload.exp;
+    const now = Math.floor(new Date().getTime() / 1000);
+
+    return now > expiry;
   }
 }
