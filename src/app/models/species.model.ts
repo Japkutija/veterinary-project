@@ -1,4 +1,4 @@
 export interface Species {
   uuid: string;
-  speciesName: string;
+  name: string;
 }

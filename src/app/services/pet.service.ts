@@ -19,6 +19,10 @@ export class PetService {
     );
   }
 
+  updatePets(pet: Pet): Observable<Pet> {
+    return this.http.put<Pet>(`${this.apiUrl}/${pet.uuid}`, pet, { withCredentials: true });
+  }
+
   // Add other methods for CRUD operations as needed
   deletePet(petUuid: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${petUuid}`, { withCredentials: true });
