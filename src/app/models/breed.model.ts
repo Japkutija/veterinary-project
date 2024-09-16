@@ -1,5 +1,5 @@
 export interface Breed {
   uuid: string;
-  breedName: string;
+  name: string;
   speciesUuid: string;
 }
