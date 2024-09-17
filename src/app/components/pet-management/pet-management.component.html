@@ -54,7 +54,7 @@
             <!-- Editing mode -->
             <ng-template #editing>
               <td><input type="text" nz-input [(ngModel)]="editCache[pet.uuid].data.nickname" /></td>
-              <td><input type="text" nz-input [(ngModel)]="editCache[pet.uuid].data.ownerName" /></td>
+              <td><input disabled="true" type="text" nz-input [(ngModel)]="editCache[pet.uuid].data.ownerName" /></td>
               <td>
                 <nz-select
                   class="w-full"
