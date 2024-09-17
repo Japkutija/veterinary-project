@@ -1,111 +1,12 @@
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Veterinary Institute VZ - Efficient Pet Management System</title>
-  <meta name="description" content="Veterinary Institute VZ provides a comprehensive solution for managing pet owners, pets, and vaccination records.">
-  <meta name="keywords" content="Veterinary Management, Pet Care, Vaccination Tracking, Pet Owner Records">
+<nz-layout class="flex flex-col min-h-screen">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
+  <!-- Header -->
+  <app-header></app-header>
 
-body {
-  font-family: 'Poppins', sans-serif;
-}
-header {
-  background: linear-gradient(to right, #667eea, #764ba2);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
-}
-.dropdown:hover .dropdown-menu {
-  display: block;
-}
-@media (max-width: 768px) {
-  .mobile-nav {
-      display: none;
-  }
-  .hamburger {
-      display: block;
-  }
-  .hamburger.active + .mobile-nav {
-      display: block;
-  }
-}
-.cta-button {
-  transition: all 0.3s ease-in-out;
-}
-.cta-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.2);
-}
+  <!-- Main Content -->
+  <app-main class="flex-grow"></app-main>
 
-  </style>
-</head>
+  <!-- Footer -->
+  <app-footer></app-footer>
 
-<body class="text-gray-800 bg-white">
-  <header class="text-white shadow-md bg-gradient-to-r from-blue-600 to-blue-800">
-      <div class="container flex items-center justify-between px-6 py-4 mx-auto">
-          <div class="flex items-center">
-              <img src="https://placehold.co/150x50" alt="Veterinary Institute VZ Logo" class="h-12 mr-3">
-              <span class="text-2xl font-bold">Veterinary Institute VZ</span>
-          </div>
-          <nav>
-              <button class="text-3xl hamburger md:hidden focus:outline-none">
-                  <i class="fas fa-bars"></i>
-              </button>
-              <ul class="hidden md:flex">
-                  <li><a routerLink="/login" class="px-4 py-2 text-sm hover:underline">Dashboard</a></li>
-                  <li class="relative">
-                      <a href="#management" class="px-4 py-2 text-sm hover:underline">Login</a>
-                      <ul class="absolute hidden bg-blue-700 rounded shadow-lg group-hover:block">
-                          <li><a class="block px-4 py-2 text-white hover:bg-blue-800">Pet and Owner Management</a></li>
-                          <li><a href="#vaccination" class="block px-4 py-2 text-white hover:bg-blue-800">Vaccination Records</a></li>
-                          <li><a href="#reporting" class="block px-4 py-2 text-white hover:bg-blue-800">Reporting</a></li>
-                      </ul>
-                  </li>
-                  <li><a [routerLink]= "['/pet-management']" class="px-4 py-2 text-sm hover:underline">Management</a></li>
-                  <li><a href="#admin" class="px-4 py-2 text-sm hover:underline">Administrator Features</a></li>
-                  <li><a href="#features" class="px-4 py-2 text-sm hover:underline">Additional Features</a></li>
-              </ul>
-          </nav>
-      </div>
-  </header>
-
-
-  <main class="container px-6 py-12 mx-auto">
-      <section class="mb-12 text-center">
-        <h1 class="mb-4 text-4xl font-bold">Caring for Your Furry Friends</h1>
-        <p class="mb-6 text-lg">Your trusted partner in pet healthcare.</p>
-          <img src="https://placehold.co/600x400" alt="Veterinary care with pets and professionals" class="mx-auto mb-8 rounded-lg shadow-lg">
-          <h2 class="mb-6 text-3xl font-bold text-gray-800">Discover Our System</h2>
-          <p class="mb-8 text-lg text-gray-600">Our system is designed to streamline the management of pet health records, ensuring your furry friends are always up-to-date with their vaccinations.</p>
-          <div class="flex justify-center">
-              <a href="#login" class="px-6 py-3 mr-4 text-white bg-purple-700 rounded cta-button">Login</a>
-              <a href="#learn-more" class="px-6 py-3 text-purple-700 border border-purple-700 rounded cta-button">Learn More</a>
-          </div>
-      </section>
-  </main>
-
-  <footer class="py-8 text-white bg-gray-900">
-      <div class="container px-6 mx-auto">
-          <div class="flex flex-wrap items-center justify-between">
-              <div class="w-full mb-6 md:w-auto md:mb-0">
-                  <h3 class="mb-4 text-lg font-bold">Veterinary Institute VZ</h3>
-                  <p class="mb-2">123 Vet Street, Petville, PA 12345</p>
-                  <p class="mb-2">Email: contact@veterinaryvz.com</p>
-                  <p>Phone: (123) 456-7890</p>
-              </div>
-              <div class="w-full md:w-auto">
-                  <ul class="flex flex-wrap items-center space-x-4">
-                      <li><a href="#privacy" class="hover:text-blue-400">Privacy Policy</a></li>
-                      <li><a href="#terms" class="hover:text-blue-400">Terms of Use</a></li>
-                      <li><a href="#disclaimer" class="hover:text-blue-400">Legal Disclaimer</a></li>
-                      <li><a href="#contact" class="hover:text-blue-400">Contact Us</a></li>
-                      <li><a href="#about" class="hover:text-blue-400">About Us</a></li>
-                  </ul>
-              </div>
-          </div>
-      </div>
-  </footer>
-
-</body>
-
+</nz-layout>
