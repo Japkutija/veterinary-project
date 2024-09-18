@@ -100,7 +100,6 @@ export class PetManagementComponent {
 
   saveEdit(uuid: string): void {
     const petData = this.editCache[uuid].data;
-    console.log('Saving pet:', petData);
 
     // Validation: Check if species and breed are selected
     if (!petData.speciesUuid || !petData.breedUuid) {
@@ -111,7 +110,7 @@ export class PetManagementComponent {
       return;
     }
 
-    this.petService.updatePets(petData).subscribe({
+    this.petService.updatePet(uuid, petData).subscribe({
       next: () => {
         console.log('Pet updated successfully');
         this.loadPets();
