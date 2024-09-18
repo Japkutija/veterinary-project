@@ -5,3 +5,16 @@
 * {
   /* outline: 1px solid red; */
 }
+
+.owner-edit-modal .ant-modal {
+  @apply overflow-hidden rounded-lg;
+}
+
+.owner-edit-modal .ant-modal-content {
+  @apply rounded-lg;
+}
+
+.owner-edit-modal .ant-modal-header,
+.owner-edit-modal .ant-modal-footer {
+  @apply rounded-t-lg rounded-b-lg;
+}

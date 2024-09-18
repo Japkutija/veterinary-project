@@ -11,7 +11,7 @@ import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { sl_SI } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import sl from '@angular/common/locales/sl';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './icons-provider.module';
@@ -31,6 +31,11 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { OwnerManagementComponent } from './components/owner-management/owner-management.component';
+import { OwnerEditComponent } from './components/owner-management/owner-edit/owner-edit.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 
 registerLocaleData(sl);
 
@@ -45,11 +50,14 @@ registerLocaleData(sl);
         FooterComponent,
         MainComponent,
         LoginFormComponent,
-        LoginImageComponent
+        LoginImageComponent,
+        OwnerManagementComponent,
+        OwnerEditComponent
     ],
     providers: [
         { provide: NZ_I18N, useValue: en_US },
-        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
 
     ],
     bootstrap: [AppComponent],
@@ -57,6 +65,7 @@ registerLocaleData(sl);
         BrowserModule,
         AppRoutingModule,
         FormsModule,
+        ReactiveFormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
         IconsProviderModule,
@@ -69,7 +78,9 @@ registerLocaleData(sl);
         NzPaginationModule,
         NzInputModule,
         NzModalModule,
-        NzSelectModule
+        NzSelectModule,
+        NzFormModule,
+        NzDatePickerModule
     ]
 })
 export class AppModule { }
