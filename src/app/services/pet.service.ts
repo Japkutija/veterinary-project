@@ -20,10 +20,12 @@ export class PetService {
     sortOrder: string,
     searchValue?: string
   ): Observable<PaginatedResponse<Pet>> {
+
     let params = new HttpParams()
-      .set('page', (pageIndex - 1).toString())
-      .set('size', pageSize.toString())
-      .set('sort', `${sortField},${sortOrder === 'ascend' ? 'asc' : 'desc'}`);
+      .set('pageIndex', pageIndex.toString())
+      .set('pageSize', pageSize.toString())
+      .set('sortField', sortField)
+      .set('sortOrder', sortOrder);
 
     if (searchValue) {
       params = params.set('search', searchValue);

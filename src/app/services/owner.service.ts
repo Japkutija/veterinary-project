@@ -21,13 +21,14 @@ export class OwnerService {
     searchValue?: string
   ): Observable<PaginatedResponse<Owner>> {
     let params = new HttpParams()
-      .set('page', (pageIndex - 1).toString())
-      .set('size', pageSize.toString())
-      .set('sort', `${sortField},${sortOrder === 'ascend' ? 'asc' : 'desc'}`);
+      .set('pageIndex', pageIndex.toString())
+      .set('pageSize', pageSize.toString())
+      .set('sortField', sortField)
+      .set('sort', sortField);
 
-    if (searchValue) {
-      params = params.set('search', searchValue);
-    }
+    // if (searchValue) {
+    //   params = params.set('search', searchValue);
+    // }
 
     return this.http.get<PaginatedResponse<Owner>>(this.apiUrl, {
       params,

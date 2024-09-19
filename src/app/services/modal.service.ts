@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+export enum ModalType {
+  PetEdit,
+  OwnerEdit,
+  // ...add more as needed
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -9,21 +15,22 @@ export class ModalService {
 
   constructor() { }
 
-  private display: BehaviorSubject<'open' | 'close'> = new BehaviorSubject<'open' | 'close'>('close');
+  private modalSubject = new BehaviorSubject<ModalType | null>(null);
 
-  /**
-   * Returns an Observable that emits either 'open' or 'close' when the modal is displayed or closed.
-   * @returns An Observable that emits either 'open' or 'close'.
-   */
-  watch(): Observable<'open' | 'close'> {
-    return this.display.asObservable();
+  watch() {
+    return this.modalSubject.asObservable();
   }
 
-  open(): void {
-    this.display.next('open');
+  /**
+   * Opens a modal of the specified type.
+   *
+   * @param modalType - The type of modal to open.
+   */
+  open(modalType: ModalType): void {
+    this.modalSubject.next(modalType);
   }
 
   close(): void {
-    this.display.next('close');
+    this.modalSubject.next(null);
   }
 }
