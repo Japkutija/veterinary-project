@@ -14,7 +14,7 @@
           <button nz-button nzType="primary" nzSize="small" nzSearch>Search</button>
         </ng-template>
 
-        <button nz-button nzType="default" nzSize="default" (click)="openEditModal()">Add Pet</button>
+        <button nz-button nzType="default" nzSize="default" (click)="openAddPetModal()">Add Pet</button>
       </div>
 
       <!-- Table -->
@@ -86,7 +86,6 @@
                     [nzLabel]="breed.name"
                     [nzValue]="breed.uuid"
                   ></nz-option>
-
                 </nz-select>
               </td>
             </ng-template>
@@ -133,6 +132,17 @@
       ></nz-pagination> -->
     </div>
   </nz-content>
+
+  <!-- Pet Modal Component -->
+  <app-pet-modal
+    [isVisible]="isPetModalVisible"
+    [speciesList]="speciesList"
+    [ownerList]="ownerList"
+    (onSave)="handlePetSave($event)"
+    (onCancel)="handlePetCancel()"
+    (onSpeciesChanged)="loadBreedsForModal($event)"
+    [breedList]="modalBreedList"
+  ></app-pet-modal>
 
   <!-- Footer -->
   <app-footer></app-footer>
