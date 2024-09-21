@@ -27,9 +27,9 @@ export class PetService {
       .set('sortField', sortField)
       .set('sortOrder', sortOrder);
 
-    if (searchValue) {
-      params = params.set('search', searchValue);
-    }
+    // if (searchValue) {
+    //   params = params.set('search', searchValue);
+    // }
 
     return this.http.get<PaginatedResponse<Pet>>(this.apiUrl, {
       params,

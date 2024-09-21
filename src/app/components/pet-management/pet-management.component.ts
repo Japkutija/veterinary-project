@@ -1,3 +1,4 @@
+import { OwnerService } from 'src/app/services/owner.service';
 import { Pet } from 'src/app/models/pet.model';
 import { ModalService } from './../../services/modal.service';
 import { Component } from '@angular/core';
@@ -10,6 +11,9 @@ import { Species } from 'src/app/models/species.model';
 import { Breed } from 'src/app/models/breed.model';
 import { SpeciesService } from 'src/app/services/species.service';
 import { BreedService } from 'src/app/services/breed.service';
+import { FormGroup } from '@angular/forms';
+import { Owner } from 'src/app/models/owner.model';
+import { PetModalComponent } from '../pet-modal/pet-modal.component';
 
 @Component({
   selector: 'app-pet-management',
@@ -30,6 +34,10 @@ export class PetManagementComponent {
   sortOrder: string = 'ascend';
   authSubscription!: Subscription;
   editCache: { [key: string]: { edit: boolean; data: Pet } } = {};
+  addPetForm!: FormGroup;
+  isPetModalVisible = false;
+  modalBreedList: Breed[] = [];
+  ownerList: Owner[] = [];
 
   constructor(
     private petService: PetService,
@@ -37,7 +45,8 @@ export class PetManagementComponent {
     private authService: AuthService,
     private router: Router,
     private speciesService: SpeciesService,
-    private breedService: BreedService
+    private breedService: BreedService,
+    private OwnerService: OwnerService
   ) {}
 
   ngOnInit(): void {
@@ -198,12 +207,52 @@ export class PetManagementComponent {
     this.loadPets();
   }
 
-  openEditModal(pet?: Pet): void {
-    // Implement open edit modal functionality
+  openAddPetModal(): void {
+    this.isPetModalVisible = true;
+    // this.addPetForm.reset();
+
+    // const modal = this.modal.create({
+    //   nzTitle: 'Edit Owner',
+    //   nzContent: PetModalComponent,
+    //   // nzComponentParams: {
+    //   //   owner: { ...owner },
+    //   // },
+    //   nzFooter: null,
+    //   nzClassName: 'owner-edit-modal',
+    // });
+
+    // modal.afterClose.subscribe((result) => {
+    //   if (result === 'Success') {
+    //     this.loadPets();
+    //     //this.showUpdateSuccess();
+    //   }
+    // });
+  }
+  handlePetCancel(): void {
+    this.isPetModalVisible = false;
   }
 
   editPet(pet?: Pet): void {
     // Implement edit pet functionality
+  }
+
+  handlePetSave(petData: Pet): void {
+    this.petService.createPet(petData).subscribe({
+      next: () => {
+        this.isPetModalVisible = false;
+        this.loadPets();
+        this.modal.success({
+          nzTitle: 'Pet added successfully',
+        });
+      },
+      error: (err) => {
+        console.error('Failed to add pet:', err);
+        this.modal.error({
+          nzTitle: 'Failed to add pet',
+          nzContent: 'An error occurred while adding the pet. Please try again.',
+        });
+      },
+    });
   }
 
   deletePet(petUuid: string): void {
@@ -246,5 +295,19 @@ export class PetManagementComponent {
       nzTitle: 'Failed to delete pet',
       nzContent: 'An error occurred while deleting the pet. Please try again.',
     });
+  }
+  loadBreedsForModal(speciesUuid: string): void {
+    if (speciesUuid) {
+      this.breedService.getBreedsBySpeciesUuid(speciesUuid).subscribe({
+        next: (data) => {
+          this.modalBreedList = data;
+        },
+        error: (err) => {
+          console.error('Error fetching breeds:', err);
+        },
+      });
+    } else {
+      this.modalBreedList = [];
+    }
   }
 }

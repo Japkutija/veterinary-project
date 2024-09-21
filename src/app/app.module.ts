@@ -36,6 +36,7 @@ import { OwnerEditComponent } from './components/owner-management/owner-edit/own
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
+import { PetModalComponent } from './components/pet-modal/pet-modal.component';
 
 registerLocaleData(sl);
 
@@ -52,7 +53,8 @@ registerLocaleData(sl);
         LoginFormComponent,
         LoginImageComponent,
         OwnerManagementComponent,
-        OwnerEditComponent
+        OwnerEditComponent,
+        PetModalComponent
     ],
     providers: [
         { provide: NZ_I18N, useValue: en_US },
