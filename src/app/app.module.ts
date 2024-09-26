@@ -37,6 +37,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { PetModalComponent } from './components/pet-modal/pet-modal.component';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 registerLocaleData(sl);
 
@@ -82,7 +83,8 @@ registerLocaleData(sl);
         NzModalModule,
         NzSelectModule,
         NzFormModule,
-        NzDatePickerModule
+        NzDatePickerModule,
+        NzRadioModule
     ]
 })
 export class AppModule { }

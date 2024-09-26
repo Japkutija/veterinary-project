@@ -1,79 +1,101 @@
 <!-- pet-modal.component.html -->
 
-<nz-modal
-  [(nzVisible)]="isVisible"
-  nzTitle="Add Pet"
-  (nzOnCancel)="handleCancel()"
-  (nzOnOk)="handleOk()"
->
-<ng-container *nzModalContent>
-  <form nz-form [formGroup]="petForm">
-    <!-- Nickname -->
-    <nz-form-item>
-      <nz-form-label [nzSm]="6" nzRequired nzFor="nickname">Nickname</nz-form-label>
-      <nz-form-control [nzSm]="14" nzErrorTip="Please input the pet's nickname">
-        <input nz-input formControlName="nickname" id="nickname" />
-      </nz-form-control>
-    </nz-form-item>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Add Pet" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="petForm">
+      <!-- Nickname -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" nzRequired nzFor="nickname">Nickname</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Please input the pet's nickname">
+          <input nz-input formControlName="nickname" id="nickname" />
+        </nz-form-control>
+      </nz-form-item>
 
-    <!-- Owner -->
-    <nz-form-item>
-      <nz-form-label [nzSm]="6" nzRequired nzFor="ownerUuid">Owner</nz-form-label>
-      <nz-form-control [nzSm]="14" nzErrorTip="Please select an owner">
-        <nz-select
-          formControlName="ownerUuid"
-          nzShowSearch
-          nzAllowClear
-          nzPlaceHolder="Select an owner"
-        >
-          <nz-option
-            *ngFor="let owner of ownerList"
-            [nzLabel]="owner.firstName + ' ' + owner.lastName"
-            [nzValue]="owner.uuid"
-          ></nz-option>
-        </nz-select>
-      </nz-form-control>
-    </nz-form-item>
+      <!-- Owner -->
+      <nz-form-item *ngIf="currentUser?.role === 'ADMIN'">
+        <nz-form-label [nzSm]="6" nzRequired nzFor="ownerUuid">Owner</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Please select an owner">
+          <nz-select formControlName="ownerUuid" nzShowSearch nzAllowClear nzPlaceHolder="Select an owner">
+            <nz-option
+              *ngFor="let owner of ownerList"
+              [nzLabel]="owner.firstName + ' ' + owner.lastName"
+              [nzValue]="owner.uuid"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
 
-    <!-- Species -->
-    <nz-form-item>
-      <nz-form-label [nzSm]="6" nzRequired nzFor="speciesUuid">Species</nz-form-label>
-      <nz-form-control [nzSm]="14" nzErrorTip="Please select a species">
-        <nz-select
-          formControlName="speciesUuid"
-          nzShowSearch
-          nzAllowClear
-          nzPlaceHolder="Select a species"
-          (ngModelChange)="onSpeciesChange($event)"
-        >
-          <nz-option
-            *ngFor="let species of speciesList"
-            [nzLabel]="species.name"
-            [nzValue]="species.uuid"
-          ></nz-option>
-        </nz-select>
-      </nz-form-control>
-    </nz-form-item>
+      <!-- Gender -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" nzRequired nzFor="gender">Gender</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Please select the pet's gender">
+          <nz-radio-group formControlName="gender">
+            <label nz-radio nzValue="MALE">Male</label>
+            <label nz-radio nzValue="FEMALE">Female</label>
+            <label nz-radio nzValue="OTHER">Other</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
 
-    <!-- Breed -->
-    <nz-form-item>
-      <nz-form-label [nzSm]="6" nzRequired nzFor="breedUuid">Breed</nz-form-label>
-      <nz-form-control [nzSm]="14" nzErrorTip="Please select a breed">
-        <nz-select
-          formControlName="breedUuid"
-          nzShowSearch
-          nzAllowClear
-          nzPlaceHolder="Select a breed"
-          [nzDisabled]="!petForm.get('speciesUuid')?.value"
-        >
-          <nz-option
-            *ngFor="let breed of breedList"
-            [nzLabel]="breed.name"
-            [nzValue]="breed.uuid"
-          ></nz-option>
-        </nz-select>
-      </nz-form-control>
-    </nz-form-item>
-  </form>
-</ng-container>
+      <!-- Date of Birth -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" nzRequired nzFor="dateOfBirth">Date of Birth</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Please select the pet's date of birth">
+          <nz-date-picker formControlName="dateOfBirth" nzFormat="yyyy-MM-dd"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Weight -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" nzRequired nzFor="weight">Weight (kg)</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Please input the pet's weight">
+          <input nz-input type="number" formControlName="weight" id="weight" min="0" step="0.05" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Height -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" nzRequired nzFor="height">Height (cm)</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Please input the pet's height">
+          <input nz-input type="number" formControlName="height" id="height" min="0" step="0.05" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Species -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" nzRequired nzFor="speciesUuid">Species</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Please select a species">
+          <nz-select
+            formControlName="speciesUuid"
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Select a species"
+            (ngModelChange)="onSpeciesChange($event)"
+          >
+            <nz-option
+              *ngFor="let species of speciesList"
+              [nzLabel]="species.name"
+              [nzValue]="species.uuid"
+            ></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Breed -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" nzRequired nzFor="breedUuid">Breed</nz-form-label>
+        <nz-form-control [nzSm]="14" nzErrorTip="Please select a breed">
+          <nz-select
+            formControlName="breedUuid"
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Select a breed"
+            [nzDisabled]="!petForm.get('speciesUuid')?.value"
+          >
+            <nz-option *ngFor="let breed of breedList" [nzLabel]="breed.name" [nzValue]="breed.uuid"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
 </nz-modal>

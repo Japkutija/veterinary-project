@@ -1,43 +1,80 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AuthService } from './../../services/auth.service';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Breed } from 'src/app/models/breed.model';
 import { Owner } from 'src/app/models/owner.model';
 import { Pet } from 'src/app/models/pet.model';
 import { Species } from 'src/app/models/species.model';
+import { User } from 'src/app/models/user.model';
+import { BreedService } from 'src/app/services/breed.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-pet-modal',
   templateUrl: './pet-modal.component.html',
   styleUrls: ['./pet-modal.component.css'],
 })
-export class PetModalComponent {
+export class PetModalComponent implements OnInit {
   @Input() isVisible = false;
   @Input() petData?: Pet;
   @Input() speciesList: Species[] = [];
   @Input() ownerList: Owner[] = [];
+  @Input() breedList: Breed[] = [];
   @Output() onSave = new EventEmitter<Pet>();
   @Output() onCancel = new EventEmitter<void>();
   @Output() onSpeciesChanged = new EventEmitter<string>();
 
   petForm!: FormGroup;
-  @Input() breedList: Breed[] = [];
+  currentUser: User | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private breedService: BreedService,
+    private userService: UserService
+  ) {}
+
+  ngOnInit(): void {
     this.createForm();
+    this.initializeUser();
   }
 
+  initializeUser(): void {
+    this.userService.getCurrentUser().subscribe(
+      (user: User | null) => {
+        if (!user) {
+          this.userService.fetchAndUpdateUserProfile();
+        } else {
+          this.currentUser = user;
+          console.log('User profile:', user);
+        }
+      },
+      (error) => {
+        console.error('Error fetching user profile:', error);
+      }
+    );
+  }
   ngOnChanges(): void {
-    if (this.isVisible) {
+    if (this.isVisible && this.petForm) {
       this.populateForm();
     }
   }
+  ngOnDestroy(): void {}
 
   createForm(): void {
     this.petForm = this.fb.group({
       nickname: [null, [Validators.required]],
-      ownerUuid: [null, [Validators.required]],
+      gender: [null, [Validators.required]],
+      dateOfBirth: [null, [Validators.required]],
+      weight: [null, [Validators.required, Validators.min(0)]],
+      height: [null, [Validators.required, Validators.min(0)]],
       speciesUuid: [null, [Validators.required]],
       breedUuid: [null, [Validators.required]],
+    });
+
+    // Listen to speciesUuid changes to fetch breeds
+    this.petForm.get('speciesUuid')?.valueChanges.subscribe((speciesUuid) => {
+      this.onSpeciesChange(speciesUuid);
     });
   }
 
@@ -48,7 +85,12 @@ export class PetModalComponent {
       // Assume you have a method to load breeds
       this.loadBreeds(this.petData.speciesUuid);
     } else {
-      // this.petForm.reset();
+      if (this.currentUser?.role === 'ADMIN') {
+        this.petForm.addControl('ownerUuid', this.fb.control(this.currentUser.uuid, [Validators.required]));
+      } else {
+        this.petForm.patchValue({ ownerUuid: this.currentUser?.uuid });
+        // Ensure ownerUuid is set to current user's UUID on the backend
+      }
       this.breedList = [];
     }
   }
@@ -62,6 +104,7 @@ export class PetModalComponent {
   }
 
   handleCancel(): void {
+    this.petForm.reset();
     this.onCancel.emit();
   }
 
@@ -82,6 +125,14 @@ export class PetModalComponent {
   }
 
   loadBreeds(speciesUuid: string): void {
-    // Implement breed loading logic, possibly by emitting an event to the parent
+    this.onSpeciesChanged.emit(speciesUuid);
+    this.breedService.getBreedsBySpeciesUuid(speciesUuid).subscribe(
+      (breeds) => {
+        this.breedList = breeds;
+      },
+      (error) => {
+        console.error('Error fetching breeds:', error);
+      }
+    );
   }
 }

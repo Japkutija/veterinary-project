@@ -135,6 +135,7 @@
 
   <!-- Pet Modal Component -->
   <app-pet-modal
+    *ngIf="isPetModalVisible"
     [isVisible]="isPetModalVisible"
     [speciesList]="speciesList"
     [ownerList]="ownerList"

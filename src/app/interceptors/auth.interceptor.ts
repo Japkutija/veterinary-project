@@ -12,7 +12,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = localStorage.getItem('accessToken');
 
     // Skip adding Authorization header for login or signup requests
-    if (request.url.includes('/login') || request.url.includes('/signup')) {
+    if (request.url.includes('/signup') || request.url.includes('/login')) {
       return next.handle(request);
     }
 
@@ -31,6 +31,8 @@ export class AuthInterceptor implements HttpInterceptor {
           return throwError(error);
         })
       );
+    } else {
+      console.log('No token found to add to the request in AuthInterceptor.');
     }
     return next.handle(request);
   }
