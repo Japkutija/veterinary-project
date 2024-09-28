@@ -46,6 +46,7 @@ export class PetModalComponent implements OnInit {
           this.userService.fetchAndUpdateUserProfile();
         } else {
           this.currentUser = user;
+          this.petForm.addControl('ownerUuid', this.fb.control(user.uuid, [Validators.required]));
           console.log('User profile:', user);
         }
       },
