@@ -246,7 +246,6 @@ export class PetManagementComponent {
         });
       },
       error: (err) => {
-        console.error('Failed to add pet:', err);
         this.modal.error({
           nzTitle: 'Failed to add pet',
           nzContent: 'An error occurred while adding the pet. Please try again.',

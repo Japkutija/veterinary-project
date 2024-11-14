@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Owner } from '../models/owner.model';
 import { environment } from 'src/environments/environment';
 import { PaginatedResponse } from '../models/paginated-response';
@@ -33,7 +33,7 @@ export class OwnerService {
     return this.http.get<PaginatedResponse<Owner>>(this.apiUrl, {
       params,
       withCredentials: true,
-    });
+    }).pipe(tap(response => console.log("Fetched owners: ", response)));
   }
 
   getOwnerByUuid(ownerUuid: string): Observable<Owner> {

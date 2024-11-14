@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Pet } from '../models/pet.model';
 import { PetResponse } from '../models/response/pet-response.model';
 import { environment } from 'src/environments/environment';
@@ -27,10 +28,6 @@ export class PetService {
       .set('sortField', sortField)
       .set('sortOrder', sortOrder);
 
-    // if (searchValue) {
-    //   params = params.set('search', searchValue);
-    // }
-
     return this.http.get<PaginatedResponse<Pet>>(this.apiUrl, {
       params,
       withCredentials: true,
@@ -42,7 +39,13 @@ export class PetService {
   }
 
   createPet(pet: Pet): Observable<Pet> {
-    return this.http.post<Pet>(this.apiUrl, pet, { withCredentials: true });
+    console.log("Whole pet: ", pet.breedName, pet.speciesName);
+    return this.http.post<Pet>(this.apiUrl, pet, { withCredentials: true }).pipe(
+      catchError(error => {
+        console.error('Error creating pet:', error.error);
+        return throwError(error);
+      })
+    );
   }
 
   updatePet(petUuid: string, pet: Pet): Observable<Pet> {

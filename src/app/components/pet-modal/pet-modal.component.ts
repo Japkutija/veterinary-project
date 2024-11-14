@@ -3,10 +3,12 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Breed } from 'src/app/models/breed.model';
 import { Owner } from 'src/app/models/owner.model';
+import { PaginatedResponse } from 'src/app/models/paginated-response';
 import { Pet } from 'src/app/models/pet.model';
 import { Species } from 'src/app/models/species.model';
 import { User } from 'src/app/models/user.model';
 import { BreedService } from 'src/app/services/breed.service';
+import { OwnerService } from 'src/app/services/owner.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -31,7 +33,8 @@ export class PetModalComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private breedService: BreedService,
-    private userService: UserService
+    private userService: UserService,
+    private ownerService: OwnerService
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +51,11 @@ export class PetModalComponent implements OnInit {
           this.currentUser = user;
           this.petForm.addControl('ownerUuid', this.fb.control(user.uuid, [Validators.required]));
           console.log('User profile:', user);
+
+          // Load owners if the current user is an ADMIN
+          if (this.currentUser?.role === 'USER') {
+            this.loadOwners();
+          }
         }
       },
       (error) => {
@@ -71,11 +79,14 @@ export class PetModalComponent implements OnInit {
       height: [null, [Validators.required, Validators.min(0)]],
       speciesUuid: [null, [Validators.required]],
       breedUuid: [null, [Validators.required]],
+      speciesName: [null],
     });
 
     // Listen to speciesUuid changes to fetch breeds
     this.petForm.get('speciesUuid')?.valueChanges.subscribe((speciesUuid) => {
       this.onSpeciesChange(speciesUuid);
+      const selectedSpecies = this.speciesList.find((species) => species.uuid === speciesUuid);
+      this.petForm.patchValue({ speciesName: selectedSpecies ? selectedSpecies.name : null }); // Update speciesName
     });
   }
 
@@ -98,6 +109,7 @@ export class PetModalComponent implements OnInit {
 
   handleOk(): void {
     if (this.petForm.valid) {
+      console.log('Pet form data:', this.petForm.value);
       this.onSave.emit(this.petForm.value);
     } else {
       this.markFormFieldsAsDirty();
@@ -130,10 +142,30 @@ export class PetModalComponent implements OnInit {
     this.breedService.getBreedsBySpeciesUuid(speciesUuid).subscribe(
       (breeds) => {
         this.breedList = breeds;
+        console.log('Breeds:', breeds);
+        const selectedBreed = this.petForm.get('breedUuid')?.value;
+        const breed = this.breedList.find((b) => b.uuid === selectedBreed);
+        this.petForm.patchValue({ breedName: breed ? breed.name : null }); // Update breedName if applicable
+        console.log("Checking whether the uuids match: ", selectedBreed, breed?.uuid);
+        console.log("Sending the following breed name: ", breed?.name);
       },
       (error) => {
         console.error('Error fetching breeds:', error);
+        this.breedList = [];
       }
     );
+  }
+  loadOwners(): void {
+    this.ownerService.getOwners(1, 1000, 'id', 'asc').subscribe(
+      (owners: PaginatedResponse<Owner>) => {
+        this.ownerList = owners.content;
+      },
+      (error) => {
+        console.error('Error fetching owners:', error);
+      }
+    );
+  }
+  formatOwnerLabel(owner: Owner): string {
+    return `${owner.firstName} ${owner.lastName} (${owner.email})`;
   }
 }
