@@ -33,7 +33,7 @@ export class OwnerService {
     return this.http.get<PaginatedResponse<Owner>>(this.apiUrl, {
       params,
       withCredentials: true,
-    }).pipe(tap(response => console.log("Fetched owners: ", response)));
+    });
   }
 
   getOwnerByUuid(ownerUuid: string): Observable<Owner> {

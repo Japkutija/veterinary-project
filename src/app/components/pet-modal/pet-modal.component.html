@@ -90,9 +90,13 @@
             nzShowSearch
             nzAllowClear
             nzPlaceHolder="Select a breed"
-            [nzDisabled]="!petForm.get('speciesUuid')?.value"
+            [nzDisabled]="!petForm.get('speciesUuid')?.value || isBreedsLoading"
+            [nzLoading]="isBreedsLoading"
           >
             <nz-option *ngFor="let breed of breedList" [nzLabel]="breed.name" [nzValue]="breed.uuid"></nz-option>
+            <nz-option *ngIf="!isBreedsLoading && breedList.length === 0" nzDisabled nzCustomContent>
+              No breeds available
+            </nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>

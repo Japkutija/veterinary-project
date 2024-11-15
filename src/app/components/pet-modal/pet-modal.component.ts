@@ -28,6 +28,7 @@ export class PetModalComponent implements OnInit {
 
   petForm!: FormGroup;
   currentUser: User | null = null;
+  isBreedsLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -50,7 +51,6 @@ export class PetModalComponent implements OnInit {
         } else {
           this.currentUser = user;
           this.petForm.addControl('ownerUuid', this.fb.control(user.uuid, [Validators.required]));
-          console.log('User profile:', user);
 
           // Load owners if the current user is an ADMIN
           if (this.currentUser?.role === 'USER') {
@@ -91,13 +91,11 @@ export class PetModalComponent implements OnInit {
   }
 
   populateForm(): void {
-    if (this.petData) {
+    if (this.petData) { // Edit mode
       this.petForm.patchValue(this.petData);
-      // Load breeds for the selected species
-      // Assume you have a method to load breeds
       this.loadBreeds(this.petData.speciesUuid);
-    } else {
-      if (this.currentUser?.role === 'ADMIN') {
+    } else { // Add / Create mode
+      if (this.currentUser?.role === 'USER') {
         this.petForm.addControl('ownerUuid', this.fb.control(this.currentUser.uuid, [Validators.required]));
       } else {
         this.petForm.patchValue({ ownerUuid: this.currentUser?.uuid });
@@ -129,9 +127,15 @@ export class PetModalComponent implements OnInit {
   }
 
   onSpeciesChange(speciesUuid: string): void {
+    console.log("Species changed.");
     this.petForm.patchValue({ breedUuid: null });
     if (speciesUuid) {
       this.loadBreeds(speciesUuid);
+      console.log("Therefore, loading breeds:");
+      // for (let i = 0; i <= this.breedList.length; i++) {
+      //   console.log("Here:", this.breedList[i].name);
+      // }
+      console.log("Length of breedList:", this.breedList.length);
     } else {
       this.breedList = [];
     }
@@ -139,19 +143,19 @@ export class PetModalComponent implements OnInit {
 
   loadBreeds(speciesUuid: string): void {
     this.onSpeciesChanged.emit(speciesUuid);
+    this.isBreedsLoading = true;
     this.breedService.getBreedsBySpeciesUuid(speciesUuid).subscribe(
       (breeds) => {
         this.breedList = breeds;
-        console.log('Breeds:', breeds);
         const selectedBreed = this.petForm.get('breedUuid')?.value;
         const breed = this.breedList.find((b) => b.uuid === selectedBreed);
         this.petForm.patchValue({ breedName: breed ? breed.name : null }); // Update breedName if applicable
-        console.log("Checking whether the uuids match: ", selectedBreed, breed?.uuid);
-        console.log("Sending the following breed name: ", breed?.name);
+        this.isBreedsLoading = false;
       },
       (error) => {
         console.error('Error fetching breeds:', error);
         this.breedList = [];
+        this.isBreedsLoading = false;
       }
     );
   }
