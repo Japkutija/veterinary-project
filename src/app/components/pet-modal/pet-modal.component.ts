@@ -1,3 +1,4 @@
+
 import { AuthService } from './../../services/auth.service';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -80,6 +81,7 @@ export class PetModalComponent implements OnInit {
       speciesUuid: [null, [Validators.required]],
       breedUuid: [null, [Validators.required]],
       speciesName: [null],
+      breedName: [null],
     });
 
     // Listen to speciesUuid changes to fetch breeds
@@ -108,6 +110,10 @@ export class PetModalComponent implements OnInit {
   handleOk(): void {
     if (this.petForm.valid) {
       console.log('Pet form data:', this.petForm.value);
+      // Find breedName by breedUuid and set it in the form
+      const breed = this.breedList.find((b) => b.uuid === this.petForm.value.breedUuid);
+      this.petForm.patchValue({ breedName: breed ? breed.name : null });
+      this.petForm.controls['breedName'].value;
       this.onSave.emit(this.petForm.value);
     } else {
       this.markFormFieldsAsDirty();
