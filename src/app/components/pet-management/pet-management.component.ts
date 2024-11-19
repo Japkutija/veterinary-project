@@ -246,12 +246,28 @@ export class PetManagementComponent {
         });
       },
       error: (err) => {
+        const errorMessage = this.getErrorMessage(err);
         this.modal.error({
           nzTitle: 'Failed to add pet',
-          nzContent: 'An error occurred while adding the pet. Please try again.',
+          nzContent: errorMessage,
         });
       },
     });
+  }
+
+  // Function to extract user-friendly error message
+  private getErrorMessage(err: any): string {
+    if (err.error) {
+      // Check if there are field-specific errors
+      if (err.error.fieldErrors && Array.isArray(err.error.fieldErrors)) {
+        return err.error.fieldErrors.map((fieldError: any) => {
+          return `${fieldError.message}`; // Format each field error
+        }).join(', '); // Join all messages into a single string
+      }
+      // Return the general error message if no field errors are present
+      return err.error.message || 'An unexpected error occurred. Please try again.';
+    }
+    return 'An unexpected error occurred. Please try again.'; // Fallback message
   }
 
   deletePet(petUuid: string): void {
