@@ -42,7 +42,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let pet of petList; let i = index">
-            <td>{{ i }}</td>
+            <td>{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
             <ng-container *ngIf="!editCache[pet.uuid].edit; else editing">
               <td>{{ pet.nickname }}</td>
               <td>

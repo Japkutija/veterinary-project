@@ -12,7 +12,7 @@
       </nz-form-item>
 
       <!-- Owner -->
-      <nz-form-item *ngIf="currentUser?.role === 'USER'">
+      <nz-form-item *ngIf="currentUser?.role === 'ADMIN'">
         <nz-form-label [nzSm]="6" nzRequired nzFor="ownerUuid">Owner</nz-form-label>
         <nz-form-control [nzSm]="14" nzErrorTip="Please select an owner">
           <nz-select formControlName="ownerUuid" nzShowSearch nzAllowClear nzPlaceHolder="Select an owner">
