@@ -1,4 +1,3 @@
-
 import { AuthService } from './../../services/auth.service';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -53,10 +52,7 @@ export class PetModalComponent implements OnInit {
           this.currentUser = user;
           this.petForm.addControl('ownerUuid', this.fb.control(user.uuid, [Validators.required]));
 
-          // Load owners if the current user is an ADMIN
-          if (this.currentUser?.role === 'USER') {
-            this.loadOwners();
-          }
+          this.loadOwners();
         }
       },
       (error) => {
@@ -93,10 +89,12 @@ export class PetModalComponent implements OnInit {
   }
 
   populateForm(): void {
-    if (this.petData) { // Edit mode
+    if (this.petData) {
+      // Edit mode
       this.petForm.patchValue(this.petData);
       this.loadBreeds(this.petData.speciesUuid);
-    } else { // Add / Create mode
+    } else {
+      // Add / Create mode
       if (this.currentUser?.role === 'USER') {
         this.petForm.addControl('ownerUuid', this.fb.control(this.currentUser.uuid, [Validators.required]));
       } else {
@@ -133,15 +131,15 @@ export class PetModalComponent implements OnInit {
   }
 
   onSpeciesChange(speciesUuid: string): void {
-    console.log("Species changed.");
+    console.log('Species changed.');
     this.petForm.patchValue({ breedUuid: null });
     if (speciesUuid) {
       this.loadBreeds(speciesUuid);
-      console.log("Therefore, loading breeds:");
+      console.log('Therefore, loading breeds:');
       // for (let i = 0; i <= this.breedList.length; i++) {
       //   console.log("Here:", this.breedList[i].name);
       // }
-      console.log("Length of breedList:", this.breedList.length);
+      console.log('Length of breedList:', this.breedList.length);
     } else {
       this.breedList = [];
     }
@@ -169,6 +167,16 @@ export class PetModalComponent implements OnInit {
     this.ownerService.getOwners(1, 1000, 'id', 'asc').subscribe(
       (owners: PaginatedResponse<Owner>) => {
         this.ownerList = owners.content;
+
+        // If the current user is a USER, find the owner by email
+        if (this.currentUser?.role === 'USER') {
+          const matchedOwner = this.ownerList.find((owner) => owner.email === this.currentUser?.email);
+          if (matchedOwner) {
+            this.petForm.patchValue({ ownerUuid: matchedOwner.uuid }); // Set the ownerUuid to the matched owner's UUID
+          } else {
+            console.error('No owner found with the provided email:', this.currentUser.email);
+          }
+        }
       },
       (error) => {
         console.error('Error fetching owners:', error);
