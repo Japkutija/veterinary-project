@@ -43,6 +43,19 @@ export class AuthService {
     );
   }
 
+  registerUser(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, userData, { withCredentials: true }).pipe(
+      tap(() => {
+        // Update authentication status
+        this.setAuthStatus(true);
+      }),
+      catchError((error: any) => {
+        console.error('Error occurred during registration:', error);
+        return throwError(error);
+      })
+    );
+  }
+
   private fetchCurrentUser(): void {
     this.userService.getProfile().subscribe(
       (user: User) => this.currentUserSubject.next(user),

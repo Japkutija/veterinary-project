@@ -39,6 +39,7 @@ import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
 import { PetModalComponent } from './components/pet-modal/pet-modal.component';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { RegisterComponent } from './components/register/register.component';
 
 registerLocaleData(sl);
 
@@ -56,7 +57,8 @@ registerLocaleData(sl);
         LoginImageComponent,
         OwnerManagementComponent,
         OwnerEditComponent,
-        PetModalComponent
+        PetModalComponent,
+        RegisterComponent
     ],
     providers: [
         { provide: NZ_I18N, useValue: en_US },
