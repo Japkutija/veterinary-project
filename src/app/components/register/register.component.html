@@ -60,7 +60,7 @@
       <!-- EMSO -->
       <nz-form-item>
         <nz-form-label [nzSm]="6" nzRequired nzFor="emso">EMSO</nz-form-label>
-        <nz-form-control [nzSm]="14" nzErrorTip="Please input your EMSO">
+        <nz-form-control [nzSm]="14" [nzErrorTip]="getEmsoErrorMessage()">
           <input nz-input formControlName="emso" id="emso" />
         </nz-form-control>
       </nz-form-item>

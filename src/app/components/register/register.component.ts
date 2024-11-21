@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserRegistration } from 'src/app/models/user-registration.model';
 import { UserService } from 'src/app/services/user.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { emsoValidator } from '../validators/emso.validator';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,7 @@ export class RegisterComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private modal: NzModalService,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +36,7 @@ export class RegisterComponent implements OnInit {
       firstName: [null, [Validators.required]],
       lastName: [null, [Validators.required]],
       dateOfBirth: [null, [Validators.required]],
-      emso: [null, [Validators.required]],
+      emso: [null, [Validators.required, emsoValidator()]],
     });
   }
 
@@ -72,5 +73,22 @@ export class RegisterComponent implements OnInit {
       control.markAsDirty();
       control.updateValueAndValidity();
     });
+  }
+  /*
+ * Retrieves the error message for the EMSO field based on its validation state.
+ *
+ * @returns {string} The appropriate error message if the EMSO field has a validation error,
+ *                   or an empty string if there are no errors.
+ */
+  getEmsoErrorMessage(): string {
+    const emsoControl = this.registerForm.get('emso');
+    if (emsoControl?.hasError('required')) {
+      return 'Please input your EMSO';
+    } else if (emsoControl?.hasError('invalidLength')) {
+      return 'EMSO must be exactly 13 digits';
+    } else if (emsoControl?.hasError('invalidFormat')) {
+      return 'EMSO must contain only numbers';
+    }
+    return '';
   }
 }
