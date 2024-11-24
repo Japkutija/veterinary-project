@@ -44,17 +44,27 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       const userData: UserRegistration = this.registerForm.value;
       this.authService.registerUser(userData).subscribe({
-        next: () => {
-          this.modal.success({
-            nzTitle: 'Registration Successful',
-            nzContent: 'You have registered successfully!',
+        next: (response) => {
+          this.authService.login(userData.email, userData.password).subscribe({
+            next: () => {
+              this.modal.success({
+                nzTitle: 'Registration Successful',
+                nzContent: 'You have registered and are now logged in!',
+              });
+              this.registerForm.reset();
+            },
+            error: (err) => {
+              this.modal.error({
+                nzTitle: 'Login Failed',
+                nzContent: err.error.message || 'An unexpected error occurred during login.',
+              });
+            },
           });
-          this.registerForm.reset();
         },
-        error: (err: any) => {
+        error: (err) => {
           this.modal.error({
             nzTitle: 'Registration Failed',
-            nzContent: err.error.message || 'An unexpected error occurred.',
+            nzContent: err.error.message || 'An unexpected error occurred during registration.',
           });
         },
       });
