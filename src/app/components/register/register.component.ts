@@ -5,6 +5,8 @@ import { UserRegistration } from 'src/app/models/user-registration.model';
 import { UserService } from 'src/app/services/user.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { emsoValidator } from '../validators/emso.validator';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorHandlerService } from 'src/app/services/ErrorHandlerService/error-handler.service';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +22,8 @@ export class RegisterComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private modal: NzModalService,
-    private authService: AuthService
+    private authService: AuthService,
+    private errorHandler: ErrorHandlerService,
   ) {}
 
   ngOnInit(): void {
@@ -55,19 +58,16 @@ export class RegisterComponent implements OnInit {
               });
               this.registerForm.reset();
             },
-            error: (err) => {
-              this.modal.error({
-                nzTitle: 'Login Failed',
-                nzContent: err.error.message || 'An unexpected error occurred during login.',
-              });
+            error: (error: HttpErrorResponse) => {
+              // Show error modal
+              this.errorHandler.showErrorModal(error);
+
             },
           });
         },
-        error: (err) => {
-          this.modal.error({
-            nzTitle: 'Registration Failed',
-            nzContent: err.error.message || 'An unexpected error occurred during registration.',
-          });
+        error: (error: HttpErrorResponse) => {
+          this.errorHandler.showErrorModal(error);
+          this.errorHandler.setFormErrors(this.registerForm, error);
         },
       });
     } else {
