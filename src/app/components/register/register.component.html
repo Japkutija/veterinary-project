@@ -64,6 +64,22 @@
           <input nz-input formControlName="emso" id="emso" />
         </nz-form-control>
       </nz-form-item>
+
+      <!-- Phone Number -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" nzRequired nzFor="phoneNumber">Phone Number</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzErrorTip]="getPhoneNumberErrorMessage()">
+          <input nz-input formControlName="phoneNumber" id="phoneNumber" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Address -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" nzRequired nzFor="address">Address</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzErrorTip]="getAddressErrorMessage()">
+          <input nz-input formControlName="address" id="address" />
+        </nz-form-control>
+      </nz-form-item>
     </form>
   </ng-container>
 </nz-modal>

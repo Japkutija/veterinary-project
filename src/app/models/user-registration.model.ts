@@ -7,4 +7,6 @@ export interface UserRegistration {
   lastName: string;
   dateOfBirth: string; // Using ISO string for dates.
   emso: string;
+  phoneNumber: string;
+  address: string;
 }

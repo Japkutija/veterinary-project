@@ -37,6 +37,8 @@ export class RegisterComponent implements OnInit {
       lastName: [null, [Validators.required]],
       dateOfBirth: [null, [Validators.required]],
       emso: [null, [Validators.required, emsoValidator()]],
+      phoneNumber: [null, [Validators.required, Validators.minLength(9), Validators.maxLength(20)]],
+      address: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(255)]]
     });
   }
 
@@ -98,6 +100,30 @@ export class RegisterComponent implements OnInit {
       return 'EMSO must be exactly 13 digits';
     } else if (emsoControl?.hasError('invalidFormat')) {
       return 'EMSO must contain only numbers';
+    }
+    return '';
+  }
+
+  getPhoneNumberErrorMessage(): string {
+    const phoneControl = this.registerForm.get('phoneNumber');
+    if (phoneControl?.hasError('required')) {
+      return 'Please input your phone number';
+    } else if (phoneControl?.hasError('minlength')) {
+      return 'Phone number must be at least 9 characters';
+    } else if (phoneControl?.hasError('maxlength')) {
+      return 'Phone number cannot exceed 20 characters';
+    }
+    return '';
+  }
+
+  getAddressErrorMessage(): string {
+    const addressControl = this.registerForm.get('address');
+    if (addressControl?.hasError('required')) {
+      return 'Please input your address';
+    } else if (addressControl?.hasError('minlength')) {
+      return 'Address must be at least 10 characters';
+    } else if (addressControl?.hasError('maxlength')) {
+      return 'Address cannot exceed 255 characters';
     }
     return '';
   }
