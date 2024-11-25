@@ -35,7 +35,7 @@ export class ErrorHandlerService {
 
     this.modal.error({
       nzTitle: error.error || 'Validation Error',
-      nzContent: `${error.message}\n\n${fieldErrorMessages}`,
+      nzContent: `${error.message}`,
     });
   }
 
