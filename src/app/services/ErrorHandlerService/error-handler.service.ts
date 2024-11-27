@@ -31,11 +31,11 @@ export class ErrorHandlerService {
 
   private showValidationError(error: ValidationErrorResponse): void {
     // Create a message that includes field errors
-    const fieldErrorMessages = error.fieldErrors.map((err) => `${err.field}: ${err.message}`).join('\n');
+    const fieldErrorMessages = error.fieldErrors.map((err) => `${err.message}`).join('\n\n');
 
     this.modal.error({
       nzTitle: error.error || 'Validation Error',
-      nzContent: `${error.message}`,
+      nzContent: `${fieldErrorMessages}`,
     });
   }
 
