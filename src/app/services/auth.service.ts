@@ -56,7 +56,7 @@ export class AuthService {
     );
   }
 
-  private fetchCurrentUser(): void {
+  public fetchCurrentUser(): void {
     this.userService.getProfile().subscribe(
       (user: User) => this.currentUserSubject.next(user),
       (error: any) => {

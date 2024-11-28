@@ -7,6 +7,8 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { emsoValidator } from '../validators/emso.validator';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandlerService } from 'src/app/services/ErrorHandlerService/error-handler.service';
+import { AuthenticationResponse } from 'src/app/models/response/authentication-response.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +26,7 @@ export class RegisterComponent implements OnInit {
     private modal: NzModalService,
     private authService: AuthService,
     private errorHandler: ErrorHandlerService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +44,7 @@ export class RegisterComponent implements OnInit {
       dateOfBirth: [null, [Validators.required]],
       emso: [null, [Validators.required, emsoValidator()]],
       phoneNumber: [null, [Validators.required, Validators.minLength(9), Validators.maxLength(20)]],
-      address: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(255)]]
+      address: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(255)]],
     });
   }
 
@@ -49,26 +52,31 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       const userData: UserRegistration = this.registerForm.value;
       this.authService.registerUser(userData).subscribe({
-        next: (response) => {
-          this.authService.login(userData.email, userData.password).subscribe({
-            next: () => {
-              this.modal.success({
-                nzTitle: 'Registration Successful',
-                nzContent: 'You have registered and are now logged in!',
-              });
-              this.registerForm.reset();
-            },
-            error: (error: HttpErrorResponse) => {
-              // Show error modal
-              this.errorHandler.showErrorModal(error);
+        next: (response: AuthenticationResponse) => {
 
-            },
+          // Store the access token
+          localStorage.setItem('accessToken', response.jwt);
+
+          this.authService.fetchCurrentUser();
+
+          // Update authentication status
+          this.authService.setAuthStatus(true);
+
+          this.registerForm.reset();
+
+          // Navigate to pet management page
+          this.router.navigate(['/pet-management']);
+
+          // Show success modal
+          this.modal.success({
+            nzTitle: 'Registration Successful',
+            nzContent: 'You have registered and are now logged in!',
           });
         },
         error: (error: HttpErrorResponse) => {
           this.errorHandler.showErrorModal(error);
           this.errorHandler.setFormErrors(this.registerForm, error);
-        },
+        }
       });
     } else {
       this.markFormFieldsAsDirty();
@@ -87,11 +95,11 @@ export class RegisterComponent implements OnInit {
     });
   }
   /*
- * Retrieves the error message for the EMSO field based on its validation state.
- *
- * @returns {string} The appropriate error message if the EMSO field has a validation error,
- *                   or an empty string if there are no errors.
- */
+   * Retrieves the error message for the EMSO field based on its validation state.
+   *
+   * @returns {string} The appropriate error message if the EMSO field has a validation error,
+   *                   or an empty string if there are no errors.
+   */
   getEmsoErrorMessage(): string {
     const emsoControl = this.registerForm.get('emso');
     if (emsoControl?.hasError('required')) {
