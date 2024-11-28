@@ -1,6 +1,6 @@
 import { AuthService } from 'src/app/services/auth.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { UserRegistration } from 'src/app/models/user-registration.model';
 import { UserService } from 'src/app/services/user.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -38,10 +38,10 @@ export class RegisterComponent implements OnInit {
       username: [null, [Validators.required]],
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(6)]],
-      confirmPassword: [null, [Validators.required]],
-      firstName: [null, [Validators.required]],
-      lastName: [null, [Validators.required]],
-      dateOfBirth: [null, [Validators.required]],
+      confirmPassword: [null, [Validators.required, Validators.minLength(6)]],
+      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      dateOfBirth: ['', [Validators.required, this.pastDateValidator()]],
       emso: [null, [Validators.required, emsoValidator()]],
       phoneNumber: [null, [Validators.required, Validators.minLength(9), Validators.maxLength(20)]],
       address: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(255)]],
@@ -53,7 +53,6 @@ export class RegisterComponent implements OnInit {
       const userData: UserRegistration = this.registerForm.value;
       this.authService.registerUser(userData).subscribe({
         next: (response: AuthenticationResponse) => {
-
           // Store the access token
           localStorage.setItem('accessToken', response.jwt);
 
@@ -76,7 +75,7 @@ export class RegisterComponent implements OnInit {
         error: (error: HttpErrorResponse) => {
           this.errorHandler.showErrorModal(error);
           this.errorHandler.setFormErrors(this.registerForm, error);
-        }
+        },
       });
     } else {
       this.markFormFieldsAsDirty();
@@ -132,6 +131,85 @@ export class RegisterComponent implements OnInit {
       return 'Address must be at least 10 characters';
     } else if (addressControl?.hasError('maxlength')) {
       return 'Address cannot exceed 255 characters';
+    }
+    return '';
+  }
+  getPasswordErrorMessage(): string {
+    const passwordControl = this.registerForm.get('password');
+    if (passwordControl?.hasError('required')) {
+      return 'Please input your password';
+    } else if (passwordControl?.hasError('minlength')) {
+      return 'Password must be at least 6 characters';
+    }
+    return '';
+  }
+  getConfirmPasswordErrorMessage(): string {
+    const confirmPasswordControl = this.registerForm.get('confirmPassword');
+    if (confirmPasswordControl?.hasError('required')) {
+      return 'Please confirm your password';
+    } else if (confirmPasswordControl?.hasError('minlength')) {
+      return 'Password must be at least 6 characters';
+    }
+    return '';
+  }
+  pastDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
+      const date = new Date(control.value);
+      return date > new Date() ? { futureDate: true } : null;
+    };
+  }
+
+  getFirstNameErrorMessage(): string {
+    const control = this.registerForm.get('firstName');
+    if (!control) return '';
+
+    if (control.hasError('required')) {
+      return 'First name is required';
+    }
+    if (control.hasError('minlength')) {
+      return 'First name must be at least 2 characters';
+    }
+    if (control.hasError('maxlength')) {
+      return 'First name cannot exceed 50 characters';
+    }
+    return '';
+  }
+
+  getLastNameErrorMessage(): string {
+    const control = this.registerForm.get('lastName');
+    if (!control) return '';
+
+    if (control.hasError('required')) {
+      return 'Last name is required';
+    }
+    if (control.hasError('minlength')) {
+      return 'Last name must be at least 2 characters';
+    }
+    if (control.hasError('maxlength')) {
+      return 'Last name cannot exceed 50 characters';
+    }
+    return '';
+  }
+
+  getDateOfBirthErrorMessage(): string {
+    const control = this.registerForm.get('dateOfBirth');
+    if (!control) return '';
+
+    if (control.hasError('required')) {
+      return 'Date of birth is required';
+    }
+    if (control.hasError('futureDate')) {
+      return 'Date of birth cannot be in the future';
+    }
+    return '';
+  }
+  getUsernameErrorMessage(): string {
+    const control = this.registerForm.get('username');
+    if (!control) return '';
+
+    if (control.hasError('required')) {
+      return 'Username is required';
     }
     return '';
   }

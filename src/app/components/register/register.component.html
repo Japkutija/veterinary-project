@@ -4,7 +4,7 @@
       <!-- Username -->
       <nz-form-item>
         <nz-form-label [nzSm]="6" nzRequired nzFor="username">Username</nz-form-label>
-        <nz-form-control [nzSm]="14" nzErrorTip="Please input your username">
+        <nz-form-control [nzSm]="14" [nzErrorTip]="getUsernameErrorMessage()">
           <input nz-input formControlName="username" id="username" />
         </nz-form-control>
       </nz-form-item>
@@ -20,7 +20,7 @@
       <!-- Password -->
       <nz-form-item>
         <nz-form-label [nzSm]="6" nzRequired nzFor="password">Password</nz-form-label>
-        <nz-form-control [nzSm]="14" nzErrorTip="Please input your password">
+        <nz-form-control [nzSm]="14" [nzErrorTip]="getPasswordErrorMessage()">
           <input nz-input type="password" formControlName="password" id="password" />
         </nz-form-control>
       </nz-form-item>
@@ -28,7 +28,7 @@
       <!-- Confirm Password -->
       <nz-form-item>
         <nz-form-label [nzSm]="6" nzRequired nzFor="confirmPassword">Confirm Password</nz-form-label>
-        <nz-form-control [nzSm]="14" nzErrorTip="Please confirm your password">
+        <nz-form-control [nzSm]="14" [nzErrorTip]="getConfirmPasswordErrorMessage()">
           <input nz-input type="password" formControlName="confirmPassword" id="confirmPassword" />
         </nz-form-control>
       </nz-form-item>
@@ -36,7 +36,7 @@
       <!-- First Name -->
       <nz-form-item>
         <nz-form-label [nzSm]="6" nzRequired nzFor="firstName">First Name</nz-form-label>
-        <nz-form-control [nzSm]="14" nzErrorTip="Please input your first name">
+        <nz-form-control [nzSm]="14" [nzErrorTip]="getFirstNameErrorMessage()">
           <input nz-input formControlName="firstName" id="firstName" />
         </nz-form-control>
       </nz-form-item>
@@ -44,7 +44,7 @@
       <!-- Last Name -->
       <nz-form-item>
         <nz-form-label [nzSm]="6" nzRequired nzFor="lastName">Last Name</nz-form-label>
-        <nz-form-control [nzSm]="14" nzErrorTip="Please input your last name">
+        <nz-form-control [nzSm]="14" [nzErrorTip]="getLastNameErrorMessage()">
           <input nz-input formControlName="lastName" id="lastName" />
         </nz-form-control>
       </nz-form-item>
@@ -52,7 +52,7 @@
       <!-- Date of Birth -->
       <nz-form-item>
         <nz-form-label [nzSm]="6" nzRequired nzFor="dateOfBirth">Date of Birth</nz-form-label>
-        <nz-form-control [nzSm]="14" nzErrorTip="Please select your date of birth">
+        <nz-form-control [nzSm]="14" [nzErrorTip]="getDateOfBirthErrorMessage()">
           <nz-date-picker formControlName="dateOfBirth" nzFormat="yyyy-MM-dd"></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
