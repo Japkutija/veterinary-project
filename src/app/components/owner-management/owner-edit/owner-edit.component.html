@@ -53,7 +53,7 @@
 
   <!-- Modal Footer -->
   <div nz-row nzJustify="end">
-    <button nz-button nzType="default" (click)="cancel()">Cancel</button>
+    <button type="button" nz-button nzType="default" (click)="cancel()">Cancel</button>
     <button nz-button nzType="primary" [nzLoading]="isLoading" [disabled]="!ownerForm.valid" htmlType="submit">
       Save
     </button>
