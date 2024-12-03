@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -11,6 +11,7 @@ export class LoginFormComponent {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
+  isRegisterFormVisible: boolean = false;
 
   isAuthenticated: boolean = false;
 
@@ -27,13 +28,7 @@ export class LoginFormComponent {
 
     if (this.email && this.password) {
       this.authService.login(this.email, this.password).subscribe(
-        (response) => {
-          // Store the access token
-          localStorage.setItem('accessToken', response.jwt);
-
-          // Update authentication status
-          this.authService.setAuthStatus(true);
-
+        () => {
           // Navigate to the home page or protected page
           this.router.navigate(['/pet-management']);
         },
@@ -49,4 +44,14 @@ export class LoginFormComponent {
     localStorage.removeItem('accessToken');
     this.authService.logout();
   }
+
+  openRegisterForm(): void {
+    this.isRegisterFormVisible = true;
+  }
+
+  onHandleCancel(): void {
+    this.isRegisterFormVisible = false;
+  }
+
+
 }

@@ -1,0 +1,61 @@
+<form nz-form [formGroup]="ownerForm" (ngSubmit)="submitForm()" class="rounded-lg">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzRequired>First Name</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzErrorTip="Please input first name">
+      <input nz-input formControlName="firstName" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6" nzRequired>Last Name</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzErrorTip="Please input last name">
+      <input nz-input formControlName="lastName" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Email</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzErrorTip="Please input a valid email">
+      <input nz-input formControlName="email" type="email" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Phone Number</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input formControlName="phoneNumber" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Address</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <input nz-input formControlName="address" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <!-- Sensitive Fields -->
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">EMSO</nz-form-label>
+    <nz-form-control [nzSpan]="14" nzErrorTip="EMSO must be 13 characters">
+      <input nz-input formControlName="emso" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">Date of Birth</nz-form-label>
+    <nz-form-control [nzSpan]="14">
+      <nz-date-picker formControlName="dateOfBirth"></nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+
+
+
+  <!-- Modal Footer -->
+  <div nz-row nzJustify="end">
+    <button type="button" nz-button nzType="default" (click)="cancel()">Cancel</button>
+    <button nz-button nzType="primary" [nzLoading]="isLoading" [disabled]="!ownerForm.valid" htmlType="submit">
+      Save
+    </button>
+  </div>
+</form>
