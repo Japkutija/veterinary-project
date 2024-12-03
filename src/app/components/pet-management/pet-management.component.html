@@ -6,7 +6,7 @@
   <nz-content class="flex justify-center p-8">
     <div class="p-4 bg-white rounded-lg shadow-md w-[80%] pt-[2.18rem] px-[2.1rem] pb-0 h-[100%]">
       <!-- Search Input and Add Pet Button -->
-      <div class="flex items-center justify-between mb-6 w-[31rem]">
+      <div class="flex items-center mb-6 w-[31rem]">
         <nz-input-group nzSearch nzSize="default" [nzAddOnAfter]="suffixButton">
           <input type="text" nz-input placeholder="Search pets..." />
         </nz-input-group>
@@ -14,7 +14,7 @@
           <button nz-button nzType="primary" nzSize="small" nzSearch>Search</button>
         </ng-template>
 
-        <button nz-button nzType="default" nzSize="default" (click)="openEditModal()">Add Pet</button>
+        <button nz-button nzType="default" nzSize="default" (click)="openAddPetModal()">Add Pet</button>
       </div>
 
       <!-- Table -->
@@ -32,7 +32,7 @@
       >
         <thead>
           <tr>
-            <th nzColumnKey="petId" nzWidth="5rem" [nzSortFn]="true">Pet ID</th>
+            <th nzColumnKey="petId" nzWidth="5rem">#</th>
             <th nzColumnKey="nickname" [nzSortFn]="true">nickname</th>
             <th nzColumnKey="owner" [nzSortFn]="true">Owner</th>
             <th nzColumnKey="species" [nzSortFn]="true">Species</th>
@@ -42,7 +42,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let pet of petList; let i = index">
-            <td>{{ i }}</td>
+            <td>{{ (pageIndex - 1) * pageSize + i + 1 }}</td>
             <ng-container *ngIf="!editCache[pet.uuid].edit; else editing">
               <td>{{ pet.nickname }}</td>
               <td>
@@ -86,7 +86,6 @@
                     [nzLabel]="breed.name"
                     [nzValue]="breed.uuid"
                   ></nz-option>
-
                 </nz-select>
               </td>
             </ng-template>
@@ -133,6 +132,18 @@
       ></nz-pagination> -->
     </div>
   </nz-content>
+
+  <!-- Pet Modal Component -->
+  <app-pet-modal
+    *ngIf="isPetModalVisible"
+    [isVisible]="isPetModalVisible"
+    [speciesList]="speciesList"
+    [ownerList]="ownerList"
+    (onSave)="handlePetSave($event)"
+    (onCancel)="handlePetCancel()"
+    (onSpeciesChanged)="loadBreedsForModal($event)"
+    [breedList]="modalBreedList"
+  ></app-pet-modal>
 
   <!-- Footer -->
   <app-footer></app-footer>

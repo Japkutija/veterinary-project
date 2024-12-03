@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; // Add this line
-import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { User } from '../models/user.model';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +12,13 @@ export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth';
 
   private authStatus = new BehaviorSubject<boolean>(this.hasToken());
+  private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private userService: UserService) {}
+
+  getCurrentUser(): Observable<User | null> {
+    return this.currentUserSubject.asObservable();
+  }
 
   login(email: string, password: string): Observable<any> {
     const loginData = {
@@ -20,10 +27,42 @@ export class AuthService {
     };
 
     return this.http.post(`${this.apiUrl}/login`, loginData, { withCredentials: true }).pipe(
+      tap((response: any) => {
+        // Store the access token
+        localStorage.setItem('accessToken', response.jwt);
+
+        this.fetchCurrentUser();
+
+        // Update authentication status
+        this.setAuthStatus(true);
+      }),
       catchError((error: any) => {
         console.error('Error occurred during login:', error);
         return throwError('Login failed. Please try again.');
       })
+    );
+  }
+
+  registerUser(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, userData, { withCredentials: true }).pipe(
+      tap(() => {
+        // Update authentication status
+        this.setAuthStatus(true);
+      }),
+      catchError((error: any) => {
+        console.error('Error occurred during registration:', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  public fetchCurrentUser(): void {
+    this.userService.getProfile().subscribe(
+      (user: User) => this.currentUserSubject.next(user),
+      (error: any) => {
+        console.error('Error fetching user profile:', error);
+        throw error;
+      }
     );
   }
 

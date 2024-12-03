@@ -1,6 +1,5 @@
 export interface Pet {
   uuid: string;
-  chipNumber: string;
   nickname: string;
   gender: Gender;
   dateOfBirth: Date;
